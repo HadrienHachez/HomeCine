@@ -7,6 +7,7 @@ use App\Entity\Note;
 use App\Entity\Movie;
 use App\Repository\NoteRepository;
 
+use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,31 +20,36 @@ class NoteController extends AbstractController
     private $repository;
 
 
-    public function __construct(NoteRepository $repository)
+    public function __construct(NoteRepository $repository, ObjectManager $em)
     {
         $this->repository = $repository;
+        $this->em = $em;
     }
 
     /**
      * @Route("/note", name="note.index")
+     * @param Request $request
+     * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $notes = $this->repository->findAll();
+        $notes = $this->repository->findBy(array(),array('id' =>'desc'));
+        $q = $request->query->get("q");
+        if ($q) {
+            $notes = $this->getTags($notes, $q);
+        }
         return $this->render('note/index.html.twig', compact('notes'));
     }
 
     /**
-     * @Route("/note/create", name="note.new")
+     * @Route("/note/new", name="note.new")
      * @param Request $request
-     * @param Movie movie
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function new(Request $request, Movie $movie)
+    public function new(Request $request)
     {
         $note = new Note();
         $note->setCreatedAt(new \DateTime('today'));
-        $note->setMovie()
         $form = $this->createForm(NoteType::class, $note);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
@@ -69,7 +75,7 @@ class NoteController extends AbstractController
             $this->em->flush();
             return $this->redirectToRoute('note.index');
         }
-        return $this->render('note/edit.html.twig', [
+        return $this->render('note/new.html.twig', [
             'note' => $note,
             'form' => $form->createView()
         ]);

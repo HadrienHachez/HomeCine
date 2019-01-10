@@ -5,14 +5,12 @@
 
         {{ form_start(form) }}
         <div class="row">
-            <div class="col-md-2">{{ form_row(form.code_allocine) }}</div>
-            <div class="col-md-4">{{ form_row(form.title) }}</div>
-            <div class="col-md-4">{{ form_row(form.originalTitle) }}</div>
+            <div class="col-md-3">{{ form_row(form.user) }}</div>
+            <div class="col-md-3">{{ form_row(form.movie) }}</div>
+            <div class="col-md-3">{{ form_row(form.score) }}</div>
         </div>
         <div class="row">
-            <div class="col-md-2">{{ form_row(form.productionYear) }}</div>
-            <div class="col-md-4">{{ form_row(form.directors) }}</div>
-            <div class="col-md-4" aria-placeholder="facultatif">{{ form_row(form.actors) }}</div>
+            <div class="col-md-9">{{ form_row(form.commentary) }}</div>
         </div>
         {{ form_rest(form) }}
         <button class="btn btn-primary" >Sauvegarder</button>
