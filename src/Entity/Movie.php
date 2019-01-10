@@ -140,9 +140,11 @@ class Movie
         return $this;
     }
 
+
     /**
      * @return Collection|Note[]
      */
+    /*
     public function getScore(): Collection
     {
         return $this->score;
@@ -169,7 +171,7 @@ class Movie
         }
 
         return $this;
-    }
+    }*/
 
     public function getSynopsis(): ?string
     {
