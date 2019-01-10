@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Notes{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1> Tous vos notes</h1>
+        <table class ="table table-striped">
+            <thead>
+            <tr>
+                <th>Auteur</th>
+                <th>Film concerné</th>
+                <th>Date</th>
+                <th>Note</th>
+                <th>Commentaire</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for note in notes %}
+                <tr>
+                    <td>{{ note.user }}</td>
+                    <td>{{ note.movie }}</td>
+                    <td>{{ note.created_at }}</td>
+                    <td>{{ note.score }}</td>
+                    <td>{{ note.commentary }}</td>
+                    <td>
+                        <a href="#" class="btn btn-warning">Editer</a>
+                        <a href="#" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-left">
+            <a class="btn btn-success" href={{ path('note.new') }}>Ajouter</a>
+        </div>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello SearchController!{% endblock %}
+
+{% block body %}
+    <meta charset="UTF-8" />
+    <div class="container">
+        <div class="row flex">
+            {% for index,movie in items %}
+            <div class="col-4">
+                <div class="card">
+                    <h5 class="card-title">
+                        <a href="#">{{ movie.title|raw|convert_encoding('UTF-8', 'ISO-8859-1')}} ({{ movie.productionYear}}, {{ movie.castingShort.directors|raw|convert_encoding('UTF-8', 'ISO-8859-1')}})</a>
+                    </h5>
+                    <p>{{ movie.castingShort.actors|raw|convert_encoding('UTF-8', 'ISO-8859-1')}}</p>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

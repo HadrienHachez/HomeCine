@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class = "container mt-4">
+        <h1> {{movie.title}}</h1>
+        <p>{{ movie.originalTitle }}<p>
+        <div class="row">
+            <div class="col-md-3">AlloCine ID: {{ movie.codeallocine }}</div>
+            <div class="col-md-3">Date de sortie: {{ movie.productionYear}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">Réalisateur(s): {{ movie.directors}}</div>
+            <div class="col-md-3">Acteur(s): {{ movie.actors}}</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">Synopsis: {{movie.synopsis}}</div>
+        </div>
+        <h3>Avis</h3>
+        <div class = "container">
+
+        </div>
+    </div>
+{% endblock %}

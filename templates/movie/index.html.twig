@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MovieController!{% endblock %}
+
+{% block body %}
+    <div class="container mt-4">
+        <h1> Tous vos films</h1>
+        <table class ="table table-striped">
+            <thead>
+            <tr>
+                <th>Titre</th>
+                <th>Réalisateur(s)</th>
+                <th>Année</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for movie in movies %}
+            <tr>
+                <td>
+                    <a href="{{ path('movie.show', { id:movie.id}) }}">{{ movie.title}}</a>
+                </td>
+                <td>{{ movie.directors }}</td>
+                <td>{{ movie.productionYear }}</td>
+                <td>
+                    <a class="btn btn-primary" href={{ path('movie.edit', {id:movie.id}) }}>Editer</a>
+                    <a href="{{ path('movie.delete', {id:movie.id}) }}" class="btn btn-danger">Effacer</a>
+                    <a href="#" class="btn btn-info">Noter</a>
+                </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-left">
+            <a class="btn btn-success" href={{ path('movie.new') }}>Ajouter</a>
+        </div>
+    </div>
+
+{% endblock %}
