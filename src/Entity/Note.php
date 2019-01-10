@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use JMS\Serializer\Annotation as Serializer;
 
 
 /**
@@ -26,25 +25,21 @@ class Note
 
     /**
      * @ORM\Column(type="integer", nullable=true)
-     * @Serializer\Type("integer")
      */
     private $score;
 
     /**
      * @ORM\Column(type="text")
-     * @Serializer\Type("string")
      */
     private $commentary;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Serializer\Type("Datetime<'Y-m-d'>")
      */
     private $created_at;
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Serializer\Type("string")
      */
     private $user;
 
