@@ -42,14 +42,32 @@ class NoteApiController extends AbstractController
     }
 
     /**
-     * @Rest\Post("/api/note", name="api.note.new")
+     * @Rest\Post("/api/note/", name="api.note.new")
      * @param Request $request
      * @return JsonResponse
      */
     public function new(Request $request): JsonResponse
     {
-        echo $request->request->get('MovieID');
+        $content = $request->getContent();
+        if (empty($content))
+        {
+            return new JsonResponse(
+                array(
+                    'status' => 'EMPTY',
+                    'message' => 'The body of this request is empty.'
+                )
+            );
+        }
         $movie = $this->repositoryM->find($request->request->get('MovieID'));
+        if ($movie === NULL)
+        {
+            return new JsonResponse(
+                array(
+                    'status' => 'Movie not found',
+                    'message' => 'The movie cannot be found.'
+                )
+                , 404);
+        };
         $note = new Note();
         $note->setScore($request->request->get('score'))
             ->setCommentary($request->request->get('commentary'))
@@ -58,8 +76,16 @@ class NoteApiController extends AbstractController
             ->setUser($request->request->get('user'));
         $this->em->persist($note);
         $this->em->flush();
-        $data = $this->serializer->serialize($note, 'json');
-        return new JsonResponse($data, 200, [], true);
+        $data = $this->serializer->serialize($note, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return $object->getId();
+            }
+        ]);
+        $response = new JsonResponse();
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->setStatusCode(201);
+        $response->setJson($data);
+        return $response;
     }
 
     /**
@@ -79,18 +105,39 @@ class NoteApiController extends AbstractController
                     'message' => 'The body of this request is empty.'
                 )
             );
-        };
+        }
         $movie = $this->repositoryM->find($request->request->get('MovieID'));
-        $note = $this->repository->find($id);
-        $note->setScore($request->request->get('score'))
-            ->setCommentary($request->request->get('commentary'))
-            ->setCreatedAt(new \DateTime('today'))
-            ->setMovie($movie)
-            ->setUser($request->request->get('user'));
-        $this->em->persist($note);
-        $this->em->flush();
-        $data = $this->serializer->serialize($note, 'json');
-        return new JsonResponse($data, 200, [], true);
+        if ($movie === NULL)
+        {
+            return new JsonResponse(
+                array(
+                    'status' => 'Movie not found',
+                    'message' => 'The movie cannot be found.'
+                )
+                , 404);
+        };
+        try {
+            $note = $this->repository->find($id);
+            $note->setScore($request->request->get('score'))
+                ->setCommentary($request->request->get('commentary'))
+                ->setCreatedAt(new \DateTime('today'))
+                ->setMovie($movie)
+                ->setUser($request->request->get('user'));
+
+            $this->em->flush();
+            $data = $this->serializer->serialize($note, 'json', [
+                'circular_reference_handler' => function ($object) {
+                    return $object->getId();
+                }
+            ]);
+            $response = new JsonResponse();
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->setStatusCode(200);
+            $response->setJson($data);
+            return $response;
+        }catch(\Exception $e){
+            error_log($e->getMessage());
+        }
     }
 
     /**
@@ -101,9 +148,19 @@ class NoteApiController extends AbstractController
     public function getAllNotes(Request $request): JsonResponse
     {
         $notes = $this->repository->findAll();
-        $data = $this->serializer->serialize($notes, 'json');
+        // to avoid the circular reference. When serializing, a movie has a set of note but a note has a reference to a movie too.
+        // now he put the primary key of the movie and don't add the full movie object to note.
+        $data = $this->serializer->serialize($notes, 'json', [
+        'circular_reference_handler' => function ($object) {
+        return $object->getId();
+    }
+        ]);
 
-        return new JsonResponse($data, 200, [], true);
+        $response = new JsonResponse();
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->setStatusCode(200);
+        $response->setJson($data);
+        return $response;
     }
 
     /**
@@ -115,8 +172,23 @@ class NoteApiController extends AbstractController
     public function getOneNote(Request $request, $id): JsonResponse
     {
         $note = $this->repository->find($id);
-        $data = $this->serializer->serialize($note, 'json');
-        return new JsonResponse($data, 200, [], true);
+        if ($note === NULL) {
+            $response = new JsonResponse();
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->setStatusCode(404);
+            $response->setData('the note cannot be found');
+            return $response;
+        }
+        $data = $this->serializer->serialize($note, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return $object->getId();
+            }
+        ]);
+        $response = new JsonResponse();
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->setStatusCode(200);
+        $response->setJson($data);
+        return $response;
     }
 
     /**

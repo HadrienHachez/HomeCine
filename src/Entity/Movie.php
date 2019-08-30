@@ -144,16 +144,15 @@ class Movie
     /**
      * @return Collection|Note[]
      */
-    /*
-    public function getScore(): Collection
+    public function getNote(): Collection
     {
-        return $this->score;
+        return $this->note;
     }
 
     public function addScore(Note $score): self
     {
-        if (!$this->score->contains($score)) {
-            $this->score[] = $score;
+        if (!$this->note->contains($score)) {
+            $this->note[] = $score;
             $score->setMovie($this);
         }
 
@@ -162,8 +161,8 @@ class Movie
 
     public function removeScore(Note $score): self
     {
-        if ($this->score->contains($score)) {
-            $this->score->removeElement($score);
+        if ($this->note->contains($score)) {
+            $this->note->removeElement($score);
             // set the owning side to null (unless already changed)
             if ($score->getMovie() === $this) {
                 $score->setMovie(null);
@@ -171,7 +170,7 @@ class Movie
         }
 
         return $this;
-    }*/
+    }
 
     public function getSynopsis(): ?string
     {

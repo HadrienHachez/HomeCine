@@ -1,0 +1,25 @@
+<form name="form" #noteForm="ngForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-3">
+      <label for="user" class="form-control-label required">Utilisateur</label>
+      <input type="text" id="user" name="form[user]" required="required" class="form-control" [(ngModel)]="model.user"/>
+    </div>
+    <div class="col-md-3">
+      <label for="originalTitle" class="form-control-label required">Movie</label>
+      <select class="form-control" id="originalTitle" name="form[originalTitle]" required="required" [(ngModel)]="model.MovieID">
+        <option *ngFor="let movie of movies; let i = index" [ngValue]="movie.id" >{{movie.originalTitle}}</option>
+      </select>`
+    </div>
+    <div class="col-md-3">
+      <label for="score" class="form-control-label required">Score</label>
+      <input type="text" id="score" name="form[score]" required="required" class="form-control" [(ngModel)]="model.score"/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-9">
+      <label for="commentary" class="form-control-label required">Commentaire</label>
+      <textarea type="text" id="commentary" name="form[commentary]" required="required" class="form-control" [(ngModel)]="model.commentary"></textarea>
+    </div>
+  </div>
+  <button class="btn btn-primary mt-4"  [disabled]="!noteForm.form.valid">{{submitBtn}}</button>
+</form>

@@ -1,0 +1,27 @@
+<form name="form" #movieForm="ngForm" (ngSubmit)="onSubmit()">
+  <div class="row">
+    <div class="col-md-5">
+      <label for="title" class="form-control-label required">Titre</label>
+      <input type="text" id="title" name="form[title]" required="required" class="form-control" [(ngModel)]="model.title"/>
+    </div>
+    <div class="col-md-5">
+      <label for="originalTitle" class="form-control-label required">Titre original</label>
+      <input type="text" id="originalTitle" name="form[originalTitle]" required="required" class="form-control" [(ngModel)]="model.originalTitle"/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-2">
+      <label for="date" class="form-control-label required">Date de sortie</label>
+      <input type="number" id="date" name="form[productionYear]" required="required" class="form-control" [ngModel] ="model.productionYear" (ngModelChange)="model.productionYear = $event"/>
+    </div>
+    <div class="col-md-4">
+      <label for="directors" class="form-control-label required">Directeurs</label>
+      <input type="text" id="directors" name="form[directors]" required="required" class="form-control" [(ngModel)]="model.directors"/>
+    </div>
+    <div class="col-md-4">
+      <label for="actors" class="form-control-label required">Acteurs</label>
+      <input type="text" id="actors" name="form[actors]" required="required" class="form-control" [(ngModel)]="model.actors"/>
+    </div>
+  </div>
+  <button class="btn btn-primary mt-4"  [disabled]="!movieForm.form.valid">{{submitBtn}}</button>
+</form>

@@ -1,0 +1,21 @@
+<div class = "container mt-4">
+  <div *ngIf="movie === null; else show">
+    <h1>Loading</h1>
+  </div>
+  <ng-template #show>
+    <h1> {{movie.originalTitle}}</h1>
+    <div class="row">
+      <div class="col-md-5">Date de sortie: {{ movie.productionYear}}</div>
+    </div>
+    <div class="row">
+      <div class="col-md-5">Réalisateur(s): {{ movie.directors}}</div>
+      <div class="col-md-5">Acteur(s): {{ movie.actors}}</div>
+    </div>
+    <h3>Avis</h3>
+    <div class = "container">
+      <div class="my-2" *ngFor="let note of movie.note; let i = index">
+        <p>{{ note.user }} ({{ note.score}}) : {{ note.commentary }}</p>
+      </div>
+    </div>
+  </ng-template>
+</div>

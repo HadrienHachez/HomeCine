@@ -12,7 +12,6 @@ class MovieType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('code_allocine')
             ->add('title')
             ->add('originalTitle')
             ->add('productionYear')

@@ -18,7 +18,7 @@
             {% for movie in movies %}
             <tr>
                 <td>
-                    <a href="{{ path('movie.show', { id:movie.id}) }}">{{ movie.title}}</a>
+                    <a href="{{ path('movie.show', { id:movie.id}) }}">{{ movie.originalTitle}}</a>
                 </td>
                 <td>{{ movie.directors }}</td>
                 <td>{{ movie.productionYear }}</td>

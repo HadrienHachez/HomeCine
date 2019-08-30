@@ -1,6 +1,29 @@
-<h2>My movies</h2>
-<ul class="movies">
-    <li *ngFor="let movie of movies">
-        <span class="badge">{{movie.id}}</span> {{movie.title}}
-    </li>
-</ul>
+<div class="container mt-4">
+  <h1> Tous vos films</h1>
+  <table class ="table table-striped">
+    <thead>
+    <tr>
+      <th>Titre</th>
+      <th>Réalisateur(s)</th>
+      <th>Année</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let movie of movies; let i = index">
+      <td>
+        <a routerLink="/movie/show/{{ movie.id }}">{{ movie.originalTitle}}</a>
+      </td>
+      <td>{{ movie.directors }}</td>
+      <td>{{ movie.productionYear }}</td>
+      <td>
+        <a class="btn btn-primary" routerLink="/movie/edit/{{ movie.id }}">Editer</a>
+        <button (click)="deleteMovie(movie.id)" class="btn btn-danger">Effacer</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="text-left">
+    <a class="btn btn-success" routerLink="/movie/create">Ajouter</a>
+  </div>
+</div>

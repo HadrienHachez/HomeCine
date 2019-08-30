@@ -1,0 +1,5 @@
+<div class = "container mt-4">
+  <h1> Editer un film</h1>
+
+  <app-movie-form [type]="'edit'" [model]="movie" (onSubmitted)="onSubmit($event)"></app-movie-form>
+</div>

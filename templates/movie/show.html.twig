@@ -1,22 +1,21 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <div class = "container mt-4">
-        <h1> {{movie.title}}</h1>
-        <p>{{ movie.originalTitle }}<p>
+        <h1> {{movie.originalTitle}}</h1>
         <div class="row">
-            <div class="col-md-3">AlloCine ID: {{ movie.codeallocine }}</div>
-            <div class="col-md-3">Date de sortie: {{ movie.productionYear}}</div>
+            <div class="col-md-5">Date de sortie: {{ movie.productionYear}}</div>
         </div>
         <div class="row">
-            <div class="col-md-3">Réalisateur(s): {{ movie.directors}}</div>
-            <div class="col-md-3">Acteur(s): {{ movie.actors}}</div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">Synopsis: {{movie.synopsis}}</div>
+            <div class="col-md-5">Réalisateur(s): {{ movie.directors}}</div>
+            <div class="col-md-5">Acteur(s): {{ movie.actors}}</div>
         </div>
         <h3>Avis</h3>
         <div class = "container">
-
+            {% for note in movie.getNote() %}
+                <div class="my-2">
+                    <p>{{ note.getUser() }} ({{ note.getScore() }}) : {{ note.getCommentary() }}</p>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

@@ -19,7 +19,7 @@ class Note
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="score")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Movie", inversedBy="note")
      * @ORM\JoinColumn(nullable=false)
      */
     private $Movie;

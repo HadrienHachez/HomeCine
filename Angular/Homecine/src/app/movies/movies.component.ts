@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {MOVIES} from "../mock-movies";
+import {Movie} from '../movie';
+import {ActivatedRoute} from '@angular/router';
+import {MovieService} from '../movie.service';
 
 @Component({
   selector: 'app-movies',
@@ -7,10 +9,23 @@ import {MOVIES} from "../mock-movies";
   styleUrls: ['./movies.component.css']
 })
 export class MoviesComponent implements OnInit {
-  movies = MOVIES;
-  constructor() { }
+
+  movies: Movie[] = [];
+
+  constructor(private route: ActivatedRoute, private movieService: MovieService) { }
 
   ngOnInit() {
+    this.getMovies();
+  }
 
+  getMovies() {
+    this.movieService.getAllMovies().subscribe((movies) => this.movies = movies);
+  }
+
+  deleteMovie(id: number): void {
+    this.movieService.deleteMovieById(id)
+      .subscribe(_ => {
+        this.getMovies();
+      });
   }
 }

@@ -3,9 +3,11 @@
 {% block title %}Hello SearchController!{% endblock %}
 
 {% block body %}
-    <h1>{{ movie.title|raw|convert_encoding('UTF-8', 'ISO-8859-1') }} ({{ movie.originalTitle }}, {{ movie.productionYear }})</h1>
-    <hr>SYNOPSIS : {{movie.synopsis|raw|convert_encoding('UTF-8', 'ISO-8859-1') }}</hr>
-    <hr> CASTING : directeurs ({{ movie.castingShort.directors }}), acteurs ({{ movie.castingShort.actors }})</hr>
-    <a class="btn btn-primary" href={{ path('search.add', {id:movie.code}) }}>Ajouter à HomeCine</a>
+    <div class="container mt-4">
+        <h1>{{ movie.title|raw|convert_encoding('UTF-8', 'ISO-8859-1') }} ({{ movie.originalTitle }}, {{ movie.productionYear }})</h1>
+        <hr>SYNOPSIS : {{movie.synopsis|raw|convert_encoding('UTF-8', 'ISO-8859-1') }}</hr>
+        <hr> CASTING : directeurs ({{ movie.castingShort.directors }}), acteurs ({{ movie.castingShort.actors }})</hr>
 
+        <a class="btn btn-primary" href={{ path('search.add', {id:movie.code}) }}>Ajouter à HomeCine</a>
+    </div>
 {% endblock %}

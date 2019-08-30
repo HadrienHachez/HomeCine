@@ -1,0 +1,31 @@
+<div class="container mt-4">
+  <h1> Tous vos notes</h1>
+  <table class ="table table-striped">
+    <thead>
+    <tr>
+      <th>Auteur</th>
+      <th>Film concerné</th>
+      <th>Date</th>
+      <th>Note</th>
+      <th>Commentaire</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let note of notes; let i = index">
+      <td>{{ note.user }}</td>
+      <td>{{ note.Movie.originalTitle }}</td>
+      <td>{{ note.createdAt | date:'dd/MM/yyyy' }}</td>
+      <td>{{ note.score }}</td>
+      <td>{{ note.commentary }}</td>
+      <td>
+        <a  routerLink="/note/edit/{{ note.id }}" class="btn btn-primary">Editer</a>
+        <button (click)="deleteNote(note.id)" class="btn btn-danger">Delete</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <div class="text-left">
+    <a class="btn btn-success" routerLink="/note/new">Ajouter</a>
+  </div>
+</div>

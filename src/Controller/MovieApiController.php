@@ -35,7 +35,7 @@ class MovieApiController extends AbstractController
     }
 
     /**
-     * @Rest\Post("/api/movie", name="api.movie.new")
+     * @Rest\Post("/api/movie/", name="api.movie.new")
      * @param Request $request
      * @return JsonResponse
      */
@@ -56,15 +56,16 @@ class MovieApiController extends AbstractController
             ->setActors($request->request->get('actors'))
             ->setDirectors($request->request->get('directors'))
             ->setOriginalTitle($request->request->get('originalTitle'))
-            ->setProductionYear($request->request->get('productionYear'))
-            ->setSynopsis($request->request->get('synopsis'))
-            ->setTitle($request->request->get('title'))
-            ->setCodeAllocine($request->request->get('code'));
+            ->setProductionYear($request->request->get('productionYear'));
         $this->em->persist($movie);
         $this->em->flush();
         $data = $this->serializer->serialize($movie, 'json');
 
-        return new JsonResponse($data, 200, [], true);
+        $response = new JsonResponse();
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->setStatusCode(201);
+        $response->setJson($data);
+        return $response;
     }
 
     /**
@@ -75,19 +76,30 @@ class MovieApiController extends AbstractController
      */
     public function edit(Request $request, $id): JsonResponse
     {
+        $content = $request->getContent();
+        if (empty($content))
+        {
+            return new JsonResponse(
+                array(
+                    'status' => 'EMPTY',
+                    'message' => 'The body of this request is empty.'
+                )
+            );
+        }
         $movie = $this->repository->find($id);
         $movie->setTitle($request->request->get('title'))
             ->setActors($request->request->get('actors'))
             ->setDirectors($request->request->get('directors'))
             ->setOriginalTitle($request->request->get('originalTitle'))
-            ->setProductionYear($request->request->get('productionYear'))
-            ->setSynopsis($request->request->get('synopsis'))
-            ->setTitle($request->request->get('title'))
-            ->setCodeAllocine($request->request->get('code'));
+            ->setProductionYear($request->request->get('productionYear'));
         $this->em->persist($movie);
         $this->em->flush();
         $data = $this->serializer->serialize($movie, 'json');
-        return new JsonResponse($data, 200, [], true);
+        $response = new JsonResponse();
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->setStatusCode(200);
+        $response->setJson($data);
+        return $response;
     }
 
     /**
@@ -98,9 +110,19 @@ class MovieApiController extends AbstractController
     public function getAllMovies(Request $request): JsonResponse
     {
         $movies = $this->repository->findAll();
-        $data = $this->serializer->serialize($movies, 'json');
+        // to avoid the circular reference. When serializing, a movie has a set of note but a note has a reference to a movie too.
+        // now he put the primary key of the movie and don't add the full movie object to note.
+        $data = $this->serializer->serialize($movies, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return $object->getId();
+            }
+        ]);
 
-        return new JsonResponse($data, 200, [], true);
+        $response = new JsonResponse();
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->setStatusCode(200);
+        $response->setJson($data);
+        return $response;
     }
 
     /**
@@ -112,8 +134,23 @@ class MovieApiController extends AbstractController
     public function getOneMovie(Request $request, $id): JsonResponse
     {
         $movie = $this->repository->find($id);
-        $data = $this->serializer->serialize($movie, 'json');
-        return new JsonResponse($data, 200, [], true);
+        if ($movie === NULL) {
+            $response = new JsonResponse();
+            $response->headers->set('Access-Control-Allow-Origin', '*');
+            $response->setStatusCode(404);
+            $response->setData('the movie cannot be found');
+            return $response;
+        }
+        $data = $this->serializer->serialize($movie, 'json', [
+            'circular_reference_handler' => function ($object) {
+                return $object->getId();
+            }
+        ]);
+        $response = new JsonResponse();
+        $response->headers->set('Access-Control-Allow-Origin', '*');
+        $response->setStatusCode(200);
+        $response->setJson($data);
+        return $response;
     }
 
     /**

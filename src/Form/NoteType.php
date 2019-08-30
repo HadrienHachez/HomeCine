@@ -19,7 +19,7 @@ class NoteType extends AbstractType
             ->add('commentary')
             ->add('movie', EntityType::class, array(
                 'class' => Movie::class,
-                'choice_label' => 'title'
+                'choice_label' => 'originalTitle'
             ))
 
         ;

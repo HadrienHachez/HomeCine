@@ -44,11 +44,6 @@ class HomeController extends AbstractController
         $helper = new AlloHelper;
         $q = $request->query->get("q");
         $items = $helper->search($q)->movie;
-        foreach($items as $index=>$movie)
-        {
-            print_r($movie->getArray());
-            echo "<br>";
-        }
 
         return $this->render('search/index.html.twig', [
             'controller_name' => 'SearchController',

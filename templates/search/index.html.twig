@@ -4,22 +4,27 @@
 
 {% block body %}
     <div class = "container mt-3">
-        {% for index,movie in items %}
-        <div class="row mt-4">
-            <div class="col-md-7">
-                <h5>
-                    <a href={{ path('search.details', {id:movie.code}) }}>{{ movie.title|raw|convert_encoding('UTF-8', 'ISO-8859-1')}}</a> ({{ movie.productionYear}})
-                </h5>
+        {% if items is null %}
+            <div class="row mt-4">
+                Aucun film trouvé
             </div>
-            <div class="col-md-2">{{ movie.castingShort.directors|raw|convert_encoding('UTF-8', 'ISO-8859-1')}}</div>
-            <div class="col-md-7">{{ movie.castingShort.actors|raw|convert_encoding('UTF-8', 'ISO-8859-1')}}</div>
-
-        </div>
-        <div class="row">
-            <div class="col-md-7"></div>
-
-        </div>
-
-        {% endfor %}
+        {% else %}
+            <div class="row">
+                {% for index,movie in items %}
+                    <div class="col-md-4">
+                        <div class="card mb-4 shadow-sm">
+                            <img class="card-img-top" src={{ movie.posterURL }} width="100%" height="250"/>
+                            <div class="card-body">
+                                <h5>
+                                    <a href={{ path('search.details', {id:movie.code}) }}>{{ movie.title|raw|convert_encoding('UTF-8', 'ISO-8859-1')}}</a> ({{ movie.productionYear}})
+                                </h5>
+                                <div class="text-muted mb-2">{{ movie.castingShort.directors|raw|convert_encoding('UTF-8', 'ISO-8859-1')}}</div>
+                                <div>{{ movie.castingShort.actors|raw|convert_encoding('UTF-8', 'ISO-8859-1')}}</div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
