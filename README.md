@@ -28,7 +28,5 @@ Screenshot :
 ![Détail d'un film](images/movie_details.PNG)
 ![Ajout/modif d'un film](images/movie_add.PNG)
 ![Liste des notes](images/note.PNG)
-
-![Détail d'une note](images/movie_details.PNG)
-![Ajout/modif d'une note](images/movie_add.PNG)
+![Ajout/modif d'une note](images/note_add.PNG)
 
